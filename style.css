@@ -1,0 +1,108 @@
+/* body {
+    font-family: Arial, sans-serif;
+    background-image:  url("./images1.jpeg");
+    background-color: #19a9de;
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+
+background-size:100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+} */
+
+body {
+    margin: 0;
+    padding: 0;
+    background-image:  linear-gradient(
+        to right,
+        rgba(194, 130, 27, 0.8),
+        rgba(21, 108, 149, 0.6)
+      ),url('./images1.jpeg'); /* Replace 'your-image-url.jpg' with the URL of your image */
+    background-size: cover; /* Adjusts the size of the background image to cover the entire element */
+    background-repeat: no-repeat; /* Prevents the background image from repeating */
+    width: 100vw; /* Sets the width of the body element to 100% of the viewport width */
+    height: 100vh; /* Sets the height of the body element to 100% of the viewport height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+#inputForm {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+#textInput {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 10px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+#textInput:focus {
+    outline: none;
+    border-color: dodgerblue;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: dodgerblue;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #1edc5a;
+}
+
+#predictionResult {
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: green;
+    animation: fadeIn 1s ease;
+}
+
+#predictionResult h1{
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: rgb(218, 14, 14);
+    animation: fadeIn 1s ease;
+}
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+

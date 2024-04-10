@@ -1,0 +1,275 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hate Speech Detection</title>
+   <style>
+        body {
+    margin: 0;
+    padding: 0;
+    background-image:  linear-gradient(
+        to right,
+        rgba(233, 66, 186, 0.2),
+        rgba(13, 27, 220, 0.3)
+      ),url('https://www.orfonline.org/public/uploads/posts/image/Hate-speech.jpg');
+      background-position: center center;
+background-size: cover;
+background-repeat: no-repeat;
+     ; /* Prevents the background image from repeating */
+    width: 100vw; 
+    height: 100vh; 
+    display: flex;
+    justify-content: center;
+    /* align-items: center;  */
+}
+
+        .container {
+            width: 600px;
+            height:fit-content;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            background-image:  linear-gradient(
+        to right,
+        rgba(9, 157, 237, 0.8),
+    rgba(31, 210, 177, 0.6)
+      ),url('');
+            border-radius: 8px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+           
+        }
+
+        h2 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        #inputForm {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        #textInput {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        #textInput:focus {
+            outline: none;
+            border-color: dodgerblue;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: dodgerblue;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0a9154;
+        }
+        input{
+            background-color:azure;
+        }
+
+        #predictionResult {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: rgb(12, 243, 12);
+            animation: fadeIn 1s ease;
+            background-color: #fff;
+            border-radius: 3px;
+            width:max-content;
+            height: max-content;
+            display: flex;
+            margin: auto;
+            padding-top: 10px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  text-align: center;
+ 
+        }
+
+        #predictionResult h1{
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: rgb(218, 14, 14);
+            width:max-content;
+            height: max-content;
+ 
+            animation: fadeIn 1s ease;
+        }
+        h2{
+            color: rgb(237, 102, 5);
+        }
+        #speech{
+            display: flex;
+            width: 100%;
+           justify-content: center;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+    </head>
+<body>
+    <div class="container">
+        <h2>Check if your text is hate speech:</h2>
+        <form id="inputForm">
+            <input type="text" id="textInput" name="textInput" placeholder="Enter your text...">
+            <button type="submit">Submit</button>
+        </form>
+
+        <div class="speech">
+            <!-- <iframe src="voice.html"  frameborder="0" width="100%" height="250px"></iframe> -->
+            <style>
+           
+    
+            #container {
+                text-align: center;
+                background-color: #9cd9eb;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+            }
+    
+            #output {
+                margin-bottom: 20px;
+                padding: 10px;
+                border: 1px solid #ccc; /* Add border for separation */
+                border-radius: 5px;
+                background-color: #f9f9f9; /* Set output background color */
+            }
+    
+            button {
+                background-color: #007bff;
+                color: #fff;
+                padding: 10px 20px;
+                font-size: 1em;
+                border: none;
+                cursor: pointer;
+                border-radius: 5px;
+                transition: background-color 0.3s ease-in-out;
+                margin-right: 10px;
+            }
+    
+            button:hover {
+                background-color: #0056b3;
+            }
+    
+            select {
+                padding: 8px;
+                border-radius: 5px;
+                border: 1px solid #ccc;
+                font-size: 1em;
+                margin-bottom: 10px;
+            }
+        </style>
+                <div id="container">
+                    <h2>Speech Recognizer</h2>
+                    <div id="output"></div>
+                    <select id="languageSelect">
+                        <option value="en-US">English</option>
+                        <!-- <option value="es-ES">Spanish</option> -->
+                        <option value="hi-IN">Hindi</option>
+                    </select>
+                    <button id="startButton">Start</button>
+                    <button id="stopButton">Stop</button>
+                    <button id="copyButton">Copy</button>
+                </div>
+            
+                <script>
+                    const outputDiv = document.getElementById('output');
+                    const startButton = document.getElementById('startButton');
+                    const stopButton = document.getElementById('stopButton');
+                    const copyButton = document.getElementById('copyButton');
+                    const languageSelect = document.getElementById('languageSelect');
+            
+                    let recognition = null;
+            
+                    startButton.addEventListener('click', function() {
+                        if (!recognition) {
+                            recognition = new webkitSpeechRecognition() || new SpeechRecognition();
+                            recognition.lang = languageSelect.value; // Set language based on selected option
+            
+                            recognition.onresult = function(event) {
+                                const transcript = event.results[0][0].transcript;
+                                outputDiv.textContent = transcript;
+                            };
+            
+                            recognition.onerror = function(event) {
+                                console.error('Speech recognition error:', event.error);
+                            };
+                        }
+            
+                        recognition.start();
+                        startButton.disabled = true;
+                        stopButton.disabled = false;
+                    });
+            
+                    stopButton.addEventListener('click', function() {
+                        if (recognition) {
+                            recognition.stop();
+                            startButton.disabled = false;
+                            stopButton.disabled = true;
+                        }
+                    });
+            
+                    copyButton.addEventListener('click', function() {
+                        const textToCopy = outputDiv.textContent;
+                        navigator.clipboard.writeText(textToCopy)
+                            .then(() => alert('Text copied to clipboard!'))
+                            .catch(err => console.error('Unable to copy text: ', err));
+                    });
+                </script>
+        </div>
+
+        <div id="predictionResult"></div>
+
+    </div>
+
+    <script>
+        document.getElementById('inputForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var textInput = document.getElementById('textInput').value;
+            fetch('/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({text: textInput})
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.prediction=="yes")
+                document.getElementById('predictionResult').innerHTML= `<h1 color="red">Your text is Hate Speech &#128544</h1>`;
+            else
+                document.getElementById('predictionResult').innerText = data.prediction;
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>
